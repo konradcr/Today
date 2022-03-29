@@ -14,36 +14,38 @@ class ReminderListViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Create a new list layout.
         let listLayout = listLayout()
-        // Assign the list layout to the collection view layout.
         collectionView.collectionViewLayout = listLayout
-        
         
         let cellRegistration = UICollectionView.CellRegistration(handler: cellRegistrationHandler)
         
-        // Create a new data source.
         dataSource = DataSource(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: Reminder.ID) in
-            // Dequeue and return a cell using the cell registration.
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
         
         updateSnapshot()
         
-        // Assign the data source to the collection view.
         collectionView.dataSource = dataSource
-        
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        let id = reminders[indexPath.item].id
+        showDetail(for: id)
+        return false
+    }
+    
+    func showDetail(for id: Reminder.ID) {
+        let reminder = reminder(for: id)
+        let viewController = ReminderViewController(reminder: reminder)
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     private func listLayout() -> UICollectionViewCompositionalLayout {
-        // UICollectionLayoutListConfiguration creates a section in a list layout.
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .grouped)
-        // Disable separators, and change the background color to clear.
         listConfiguration.showsSeparators = false
         listConfiguration.backgroundColor = .clear
-        // Return a new compositional layout with the list configuration.
         return UICollectionViewCompositionalLayout.list(using: listConfiguration)
     }
-    
 }
+
 

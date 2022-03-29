@@ -1,6 +1,9 @@
-/*
-See LICENSE folder for this sample’s licensing information.
-*/
+//
+//  ReminderViewController+Row.swift
+//  Today
+//
+//  Created by Konrad Cureau on 29/03/2022.
+//
 
 import UIKit
 
